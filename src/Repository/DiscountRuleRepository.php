@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Entity\DiscountRules;
+use App\Entity\DiscountRule;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -12,11 +12,11 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  * @method DiscountRules[]    findAll()
  * @method DiscountRules[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class DiscountRulesRepository extends ServiceEntityRepository
+class DiscountRuleRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, DiscountRules::class);
+        parent::__construct($registry, DiscountRule::class);
     }
 
     // /**

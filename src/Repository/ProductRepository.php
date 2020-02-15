@@ -18,6 +18,16 @@ class ProductRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Product::class);
     }
+    
+    public function findByTypeWithCondition($type,$condition,$price)
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.type = :type')
+            ->andWhere('p.price '.$condition.':price')
+            ->setParameters(array('type' => $type,'price' => $price))
+            ->getQuery()
+            ->getResult();
+    }
 
     // /**
     //  * @return Product[] Returns an array of Product objects

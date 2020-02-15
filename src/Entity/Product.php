@@ -9,6 +9,12 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Product
 {
+    
+    const TYPE_HIGH_TECH = 'HIGH_TECH';
+    const TYPE_KITCHEN = "KITCHEN";
+    const TYPE_APPLIANCE = "APPLIANCE";
+    const TYPE_GAME = "GAME";
+    
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -27,14 +33,37 @@ class Product
     private $price;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer",nullable=true)
      */
-    private $discouted_price;
+    private $discountedPrice;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
     private $type;
+    
+    public function __toString()
+    {
+        return $this->getName();
+    }
+    
+    public function getTypeName($type)
+    {
+        switch ($type)
+        {
+            case self::TYPE_APPLIANCE:  
+                return 'Electromenager';
+                
+            case self::TYPE_KITCHEN:
+                return 'Cuisine';
+                
+            case self::TYPE_GAME:
+                return 'Jeux';
+                
+            case self::TYPE_HIGH_TECH:
+                return 'High Tech';
+        }
+    }
 
     public function getId(): ?int
     {
@@ -65,14 +94,14 @@ class Product
         return $this;
     }
 
-    public function getDiscoutedPrice(): ?int
+    public function getDiscountedPrice(): ?int
     {
-        return $this->discouted_price;
+        return $this->discountedPrice;
     }
 
-    public function setDiscoutedPrice(int $discouted_price): self
+    public function setDiscoutedPrice(int $discountedPrice): self
     {
-        $this->discouted_price = $discouted_price;
+        $this->discountedPrice = $discountedPrice;
 
         return $this;
     }
