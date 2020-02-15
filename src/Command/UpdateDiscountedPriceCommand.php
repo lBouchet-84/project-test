@@ -9,15 +9,18 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Product;
 use App\Entity\DiscountRule;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
+use App\Util\Email;
 
 class UpdateDiscountedPriceCommand extends Command
 {
    private $em;
+   private $email;
    
-   public function __construct(EntityManagerInterface $em)
+   public function __construct(EntityManagerInterface $em,Email $email)
    {
        parent::__construct();
         $this->em = $em;
+        $this->email = $email;
    }
    
     protected static $defaultName = 'app:update-discounted-price-products';
@@ -32,6 +35,8 @@ class UpdateDiscountedPriceCommand extends Command
         $output->write('Products discounted prices updater');
 
         $discountRules = $this->em->getRepository(DiscountRule::class)->findAll();
+        $productsModified = array();
+        
         foreach ($discountRules as $discountRule)
         {
             $discountRuleLanguage = new ExpressionLanguage();
@@ -54,11 +59,18 @@ class UpdateDiscountedPriceCommand extends Command
                {
                    $reduction = $product->getPrice() * ($discountRule->getdiscountPercent()/100);
                    $product->setDiscoutedPrice($product->getPrice()-$reduction);
+                   $productsModified [] = $product;
+               }
+               else 
+               {
+                   $product->setDiscoutedPrice(null);
                }
            }
         }
         
+        
         $this->em->flush();
+        $this->email->sendEmail($productsModified);
         $output->write('Done');
         return 0;
     }

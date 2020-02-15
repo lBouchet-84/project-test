@@ -94,12 +94,12 @@ class Product
         return $this;
     }
 
-    public function getDiscountedPrice(): ?int
+    public function getDiscountedPrice()
     {
         return $this->discountedPrice;
     }
 
-    public function setDiscoutedPrice(int $discountedPrice): self
+    public function setDiscoutedPrice($discountedPrice): self
     {
         $this->discountedPrice = $discountedPrice;
 
